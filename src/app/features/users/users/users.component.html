@@ -1,0 +1,16 @@
+<div class="users-container">
+  <h1>Manage Users</h1>
+  <button mat-raised-button color="primary" (click)="onAddUser()">
+    Add User
+  </button>
+
+  <app-user-search-filter
+    [users]="users"
+    (filterChange)="onSearchFilterChange($event)"
+  ></app-user-search-filter>
+  <app-user-list
+    [users]="filteredUsers"
+    [totalCount]="totalCount"
+    (loadUsers)="onPageChange($event)"
+  ></app-user-list>
+</div>

@@ -1,0 +1,15 @@
+.form-container {
+  max-height: 60vh; /* Limit height and enable scrolling */
+  overflow-y: auto; /* Scroll if content overflows */
+  padding-right: 10px; /* Avoid scrollbar overlap */
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+mat-dialog-actions {
+  justify-content: flex-end;
+  margin-top: 20px;
+}
