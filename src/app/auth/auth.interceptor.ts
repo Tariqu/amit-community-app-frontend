@@ -12,7 +12,11 @@ export const authInterceptor = (
   const token = authService.getToken();
 
   let authReq = req;
-  if (token) {
+  const isS3Request = req.url.includes(
+    'amit-community.s3.ap-south-1.amazonaws.com'
+  );
+  console.log(isS3Request, req.url);
+  if (token && !isS3Request) {
     authReq = req.clone({
       setHeaders: { Authorization: `Bearer ${token}` },
     });

@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { User } from '../../../core/models/user';
+import { SignedUrlAPIResponse } from '../../../core/models/signedUrl';
 
 interface ApiResponse {
   status: string;
@@ -11,7 +12,6 @@ interface ApiResponse {
     rows: User[];
   };
 }
-
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private apiUrl = `${environment.baseUrl}/api/v1/users`;
@@ -35,5 +35,28 @@ export class UserService {
 
   deleteUser(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  getSignedUrl(key: string, contentType: string) {
+    return this.http.get<SignedUrlAPIResponse>(`${this.apiUrl}/signed-url`, {
+      params: { key, contentType },
+    });
+  }
+
+  submitDetails(token: string, userData: any) {
+    return this.http.post(`${this.apiUrl}/submit-details/${token}`, userData);
+  }
+
+  generateLink() {
+    return this.http.get<{ status: string; data: { link: string } }>(
+      `${this.apiUrl}/generate-link`
+    );
+  }
+
+  validateToken(token: string) {
+    return this.http.get<{
+      status: string;
+      data: { valid: boolean; message: string; adminId: number };
+    }>(`${this.apiUrl}/validate-token/${token}`);
   }
 }

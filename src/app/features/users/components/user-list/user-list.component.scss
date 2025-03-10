@@ -1,17 +1,66 @@
-mat-table {
+/* filepath: /D:/Amit/frontend/src/app/features/users/components/user-list/user-list.component.scss */
+.responsive-table {
   width: 100%;
-  margin-top: 20px;
+  overflow-x: auto;
+
+  .mat-header-cell,
+  .mat-cell {
+    padding: 8px;
+    text-align: left;
+  }
+
+  .profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  @media (max-width: 768px) {
+    .mat-header-cell,
+    .mat-cell {
+      padding: 4px;
+      font-size: 12px;
+    }
+
+    .profile-picture {
+      width: 30px;
+      height: 30px;
+    }
+
+    .mat-header-cell:first-child,
+    .mat-cell:first-child {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .mat-header-cell,
+    .mat-cell {
+      padding: 2px;
+      font-size: 10px;
+    }
+
+    .profile-picture {
+      width: 20px;
+      height: 20px;
+    }
+
+    .mat-header-cell:first-child,
+    .mat-cell:first-child {
+      display: none;
+    }
+
+    .mat-header-cell:last-child,
+    .mat-cell:last-child {
+      display: none;
+    }
+  }
 }
 
-mat-cell,
-mat-header-cell {
-  padding: 10px;
+.action-button {
+  margin-right: 8px; // Adjust the value as needed
 }
 
-button {
-  margin-right: 10px;
-}
-
-mat-paginator {
-  margin-top: 20px;
+.action-button:last-child {
+  margin-right: 0; // Remove margin from the last button
 }

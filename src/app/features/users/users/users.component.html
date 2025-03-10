@@ -1,8 +1,15 @@
 <div class="users-container">
-  <h1>Manage Users</h1>
-  <button mat-raised-button color="primary" (click)="onAddUser()">
-    Add User
-  </button>
+  <div class="toolbar">
+    <h1>Manage Users</h1>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="onAddUser()">
+        <mat-icon>add</mat-icon> Add User
+      </button>
+      <button mat-raised-button color="accent" (click)="onGenerateLink()">
+        <mat-icon>link</mat-icon> Generate Fill Details Link
+      </button>
+    </div>
+  </div>
 
   <app-user-search-filter
     [users]="users"

@@ -48,6 +48,7 @@ export class UserListComponent implements OnChanges {
 
   dataSource = new MatTableDataSource<User>([]);
   displayedColumns: string[] = [
+    'profilePicture',
     'firstName',
     'lastName',
     'email',
@@ -59,24 +60,14 @@ export class UserListComponent implements OnChanges {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator; // Reference to paginator
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['users'] && this.users) {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['users']) {
       this.dataSource.data = this.users;
-    }
-    if (changes['totalCount'] && this.paginator) {
-      this.paginator.length = this.totalCount; // Update total items for paginator
     }
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator; // Bind paginator to data source
-    this.paginator.page.subscribe((event) => {
-      // Emit page change event with 1-based page index
-      this.loadUsers.emit({
-        page: event.pageIndex + 1,
-        limit: event.pageSize,
-      });
-    });
+  onPageChange(event: PageEvent): void {
+    this.loadUsers.emit({ page: event.pageIndex + 1, limit: event.pageSize });
   }
 
   onEdit(user: User) {
@@ -113,13 +104,6 @@ export class UserListComponent implements OnChanges {
           error: (err) => console.error('Delete failed:', err),
         });
       }
-    });
-  }
-
-  onPageChange(page: PageEvent) {
-    this.loadUsers.emit({
-      page: page.pageIndex + 1,
-      limit: page.pageSize,
     });
   }
 }

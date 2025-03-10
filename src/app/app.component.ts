@@ -14,6 +14,12 @@ export class AppComponent {
 
   // Method to check if header should be shown
   shouldShowHeader(): boolean {
-    return this.router.url !== '/login';
+    const url = this.router.url;
+    return (
+      !url.startsWith('/login') &&
+      !url.startsWith('/fill-details/') &&
+      !url.startsWith('/error') &&
+      !url.startsWith('/success')
+    );
   }
 }

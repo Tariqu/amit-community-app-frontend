@@ -1,6 +1,26 @@
 <h2 mat-dialog-title>{{ isEdit ? "Edit User" : "Add User" }}</h2>
 <mat-dialog-content class="form-container">
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div class="spacer"></div>
+    <div class="profile-picture-section">
+      <div class="preview-container">
+        <img
+          [src]="profilePicturePreview || 'assets/images/dummy-profile.webp'"
+          alt="Profile Picture"
+          class="profile-picture-preview"
+        />
+      </div>
+      <input
+        type="file"
+        accept="image/*"
+        (change)="onFileSelected($event)"
+        id="profilePictureInput"
+        class="file-input"
+      />
+      <label for="profilePictureInput" class="upload-button"
+        >Upload Picture</label
+      >
+    </div>
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>First Name</mat-label>
       <input matInput formControlName="firstName" required />
@@ -99,14 +119,6 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Other Description</mat-label>
       <textarea matInput formControlName="otherDescription" rows="3"></textarea>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="full-width" *ngIf="!isEdit">
-      <mat-label>Password</mat-label>
-      <input matInput type="password" formControlName="password" required />
-      <mat-error *ngIf="userForm.get('password')?.hasError('required')"
-        >Password is required</mat-error
-      >
     </mat-form-field>
   </form>
 </mat-dialog-content>

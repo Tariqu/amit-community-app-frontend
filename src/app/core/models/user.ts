@@ -3,7 +3,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  password?: string; // Only for creation
+  profilePicture: string | null; // Only for creation
   fathersName: string;
   mothersName: string;
   origin: string;

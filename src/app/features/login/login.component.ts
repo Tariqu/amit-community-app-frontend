@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   standalone: true,
@@ -26,6 +27,7 @@ import { AuthService } from '../../auth/auth.service';
     MatInputModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatIconModule,
   ],
   selector: 'app-login',
   templateUrl: './login.component.html',
