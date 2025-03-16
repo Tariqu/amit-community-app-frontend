@@ -4,6 +4,7 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
   selector: 'app-root',
   imports: [RouterOutlet, HeaderComponent, CommonModule],
   templateUrl: './app.component.html',
