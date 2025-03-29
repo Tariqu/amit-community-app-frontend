@@ -17,6 +17,8 @@ export interface User {
   state: string;
   pinCode: string;
   otherDescription: string;
+  role: string; // Role in the family (e.g., "Husband", "Wife", "Child")
+  familyId: number; // From API
   adminId?: number | null; // From API
   createdAt?: string; // From API
   updatedAt?: string; // From API

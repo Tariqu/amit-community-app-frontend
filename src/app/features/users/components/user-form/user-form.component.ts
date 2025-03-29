@@ -97,9 +97,7 @@ export class UserFormComponent {
     }
   }
 
-  ngOnInit() {
-    console.log(this.isEdit, this.data?.user);
-  }
+  ngOnInit() {}
 
   // Handle file selection
   onFileSelected(event: Event): void {
@@ -155,7 +153,11 @@ export class UserFormComponent {
 
     this.uploadImage()
       .then((imageUrl) => {
-        const userData = { ...this.userForm.value, profilePicture: imageUrl };
+        const userData = {
+          ...this.userForm.value,
+          profilePicture: imageUrl,
+          familyId: this.data.user?.familyId || null,
+        };
         if (userData.dob) {
           userData.dob = new Date(userData.dob).toISOString();
         }

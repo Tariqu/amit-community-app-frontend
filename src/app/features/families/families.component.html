@@ -1,0 +1,23 @@
+<div class="families-container">
+  <div class="toolbar">
+    <h1>Manage Families</h1>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="onAddFamilies()">
+        <mat-icon>add</mat-icon> Add Family
+      </button>
+      <button mat-raised-button color="accent" (click)="onGenerateLink()">
+        <mat-icon>link</mat-icon> Generate Fill Details Link
+      </button>
+    </div>
+  </div>
+
+  <app-search-filter
+    [families]="families"
+    (filterChange)="onSearchFilterChange($event)"
+  ></app-search-filter>
+  <app-family-list
+    [families]="filteredFamilies"
+    [totalCount]="totalCount"
+    (loadFamilies)="onPageChange($event)"
+  ></app-family-list>
+</div>

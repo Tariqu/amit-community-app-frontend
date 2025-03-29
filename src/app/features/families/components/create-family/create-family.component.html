@@ -1,0 +1,141 @@
+<div class="create-family-container">
+  <h1>{{ isEditMode ? "Edit Family" : "Create Family" }}</h1>
+
+  <form [formGroup]="familyForm" (ngSubmit)="onSubmit()">
+    <div class="family-container">
+      <div class="profile-picture-section">
+        <div class="preview-container">
+          <img
+            [src]="
+              profilePicturePreview ||
+              'https://fakeimg.pl/1600x900/?text=Family%20Group%20Picture&font=popins&bg=ccc&fg=000'
+            "
+            alt="Profile Picture"
+            class="profile-picture-preview"
+          />
+        </div>
+        <input
+          type="file"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          id="profilePictureInput"
+          class="file-input"
+        />
+        <label for="profilePictureInput" class="upload-button"
+          >Upload Picture</label
+        >
+      </div>
+      <div>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Choose Family Name</mat-label>
+          <input matInput formControlName="familyName" />
+          <mat-error *ngIf="familyForm.get('familyName')?.hasError('required')">
+            Family name is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+          <mat-error
+            *ngIf="familyForm.get('description')?.hasError('required')"
+          >
+            Description is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="familyForm.invalid"
+      >
+        {{ isEditMode ? "Update Family" : "Create Family" }}
+      </button>
+    </div>
+  </form>
+</div>
+
+@if (isEdit) {
+<div class="demo-button-container">
+  <div class="family-members">
+    <h2>Family Members</h2>
+  </div>
+  <div class="pd-bt"></div>
+  <button mat-raised-button (click)="onAddUser()" class="demo-button">
+    Add Member
+  </button>
+</div>
+
+<table
+  mat-table
+  [dataSource]="familyMembers"
+  class="mat-elevation-z8 demo-table"
+>
+  <ng-container matColumnDef="profilePicture">
+    <mat-header-cell *matHeaderCellDef>Profile Picture</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <img
+        [src]="element.profilePicture || 'assets/images/dummy-profile.webp'"
+        alt="Profile Picture"
+        class="profile-picture"
+      />
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="firstName">
+    <th mat-header-cell *matHeaderCellDef>First Name</th>
+    <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="lastName">
+    <th mat-header-cell *matHeaderCellDef>Last Name</th>
+    <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="role">
+    <th mat-header-cell *matHeaderCellDef>Relation</th>
+    <td mat-cell *matCellDef="let element">{{ element.role }}</td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Action</th>
+    <td mat-cell *matCellDef="let element">
+      <button
+        class="action-button"
+        mat-icon-button
+        (click)="onEdit(element)"
+        color="primary"
+        matTooltip="Edit"
+        matTooltipPosition="left"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        color="warn"
+        (click)="onDeleteFamilyMember(element.id)"
+        aria-label="Delete Member"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<div class="pd-bt"></div>
+
+<div class="pd-bt"></div>
+}
