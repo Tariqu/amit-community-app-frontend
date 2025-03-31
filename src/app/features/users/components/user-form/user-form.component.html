@@ -14,10 +14,10 @@
         type="file"
         accept="image/*"
         (change)="onFileSelected($event)"
-        id="profilePictureInput"
+        id="profilePictureInput1"
         class="file-input"
       />
-      <label for="profilePictureInput" class="upload-button"
+      <label for="profilePictureInput1" class="upload-button"
         >Upload Picture</label
       >
     </div>
@@ -53,6 +53,21 @@
       <input matInput formControlName="phone" required />
       <mat-error *ngIf="userForm.get('phone')?.hasError('required')"
         >Phone is required</mat-error
+      >
+    </mat-form-field>
+
+    <!--I want to add role here with dropdown with value Husband, Wife, Son, Daughter and default value as Not mentioned -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Relation</mat-label>
+      <mat-select formControlName="role" required>
+        <mat-option value="Not Mentioned">Not Mentioned</mat-option>
+        <mat-option value="Husband">Husband</mat-option>
+        <mat-option value="Wife">Wife</mat-option>
+        <mat-option value="Son">Son</mat-option>
+        <mat-option value="Daughter">Daughter</mat-option>
+      </mat-select>
+      <mat-error *ngIf="userForm.get('role')?.hasError('required')"
+        >Relation is required</mat-error
       >
     </mat-form-field>
 

@@ -20,6 +20,7 @@ export interface User {
   role: string; // Role in the family (e.g., "Husband", "Wife", "Child")
   familyId: number; // From API
   adminId?: number | null; // From API
+  token?: string | null; // From API
   createdAt?: string; // From API
   updatedAt?: string; // From API
   deletedAt?: string | null; // From API

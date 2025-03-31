@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/users']);
+      this.router.navigate(['/families']);
     }
   }
 
@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(username, password).subscribe({
       next: () => {
         this.loading = false;
-        this.router.navigate(['/users']);
+        this.router.navigate(['/families']);
       },
       error: (err) => {
         this.loading = false;

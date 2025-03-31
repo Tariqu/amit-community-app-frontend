@@ -13,8 +13,8 @@ interface ApiResponse {
   };
 }
 @Injectable({ providedIn: 'root' })
-export class FamilyService {
-  private apiUrl = `${environment.baseUrl}/api/v1/families`;
+export class FamilyPubService {
+  private apiUrl = `${environment.baseUrl}/api/v1/pub-families`;
 
   constructor(private http: HttpClient) {}
 
@@ -25,17 +25,17 @@ export class FamilyService {
     return this.http.get<ApiResponse>(this.apiUrl, { params });
   }
 
-  getFamilyById(id: number): Observable<{ status: string; data: Family }> {
+  getFamilyById(token: string): Observable<{ status: string; data: Family }> {
     return this.http.get<{ status: string; data: Family }>(
-      `${this.apiUrl}/${id}`
+      `${this.apiUrl}/${token}`
     );
   }
 
   getFamilyMembers(
-    familyId: number
+    token: string
   ): Observable<{ status: string; data: User[] }> {
     return this.http.get<{ status: string; data: User[] }>(
-      `${this.apiUrl}/${familyId}/members`
+      `${this.apiUrl}/${token}/members`
     ); // Assuming this endpoint exists
   }
 
@@ -56,6 +56,16 @@ export class FamilyService {
   }
 
   submitDetails(token: string, userData: any) {
-    return this.http.post(`${this.apiUrl}/submit-details/${token}`, userData);
+    return this.http.post(
+      `${this.apiUrl}/submit-family-details/${token}`,
+      userData
+    );
+  }
+
+  validateToken(token: string) {
+    return this.http.get<{
+      status: string;
+      data: { valid: boolean; message: string; adminId: number };
+    }>(`${this.apiUrl}/validate-token/${token}`);
   }
 }

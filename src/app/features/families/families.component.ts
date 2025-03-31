@@ -11,6 +11,7 @@ import { SearchFilterComponent } from './components/search-filter/search-filter.
 import { FamilyService } from './services/family.service';
 import { LinkDialogComponent } from '../../shared/components/link-dialog/link-dialog.component';
 import { Family } from '../../core/models/family';
+import { UserService } from '../users/services/user.service';
 
 @Component({
   selector: 'app-families',
@@ -28,6 +29,7 @@ import { Family } from '../../core/models/family';
 })
 export class FamiliesComponent {
   private familyService = inject(FamilyService);
+  private userService = inject(UserService);
   private dialog = inject(MatDialog);
   private snackBar: MatSnackBar = inject(MatSnackBar);
   private router: Router = inject(Router);
@@ -73,7 +75,7 @@ export class FamiliesComponent {
   }
 
   onGenerateLink() {
-    this.familyService.generateLink().subscribe({
+    this.userService.generateLink().subscribe({
       next: (response) => {
         const link = response.data.link;
         this.dialog.open(LinkDialogComponent, {

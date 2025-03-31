@@ -27,6 +27,8 @@ import { HttpClient } from '@angular/common/http';
 import { SignedUrlAPIResponse } from '../../../../core/models/signedUrl';
 import { CustomDateAdapter } from '../../../../shared/custom/custom-date-adapter';
 import { CUSTOM_DATE_FORMATS } from '../../../../shared/custom/custom-date-format';
+import { UserPubService } from '../../services/user-pub.service';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   standalone: true,
@@ -39,6 +41,7 @@ import { CUSTOM_DATE_FORMATS } from '../../../../shared/custom/custom-date-forma
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSelectModule,
   ],
   providers: [
     { provide: DateAdapter, useClass: CustomDateAdapter },
@@ -52,17 +55,29 @@ import { CUSTOM_DATE_FORMATS } from '../../../../shared/custom/custom-date-forma
 export class UserFormComponent {
   private fb = inject(FormBuilder);
   private userService = inject(UserService);
+  private userPubService = inject(UserPubService);
   private http = inject(HttpClient);
   public dialogRef = inject(MatDialogRef<UserFormComponent>);
 
   userForm: FormGroup;
   isEdit = false;
+  token: string | null = null;
+  familyId: number | null = null;
   profilePicturePreview: string | null = null; // For image preview
   selectedFile: File | null = null; // Store selected file
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { user: User | null }) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      user: User | null;
+      token: string | null;
+      familyId: number | null;
+    }
+  ) {
     this.isEdit = !!this.data?.user;
     const user = this.data?.user || null;
+    this.token = this.data?.token || null;
+    this.familyId = this.data?.familyId || null;
     // Format dob to YYYY-MM-DD for <input type="date">
     const dobFormatted = user?.dob
       ? new Date(user.dob).toISOString().split('T')[0]
@@ -76,6 +91,7 @@ export class UserFormComponent {
         [Validators.required, Validators.email],
       ],
       phone: [this.data?.user?.phone || '', Validators.required],
+      role: [this.data?.user?.role || 'Not Mentioned', [Validators.required]],
       fathersName: [this.data?.user?.fathersName || ''],
       mothersName: [this.data?.user?.mothersName || ''],
       origin: [this.data?.user?.origin || ''],
@@ -156,27 +172,49 @@ export class UserFormComponent {
         const userData = {
           ...this.userForm.value,
           profilePicture: imageUrl,
-          familyId: this.data.user?.familyId || null,
+          familyId: this.familyId || null,
         };
         if (userData.dob) {
           userData.dob = new Date(userData.dob).toISOString();
         }
-
-        if (this.isEdit) {
-          this.userService.updateUser(this.data.user!.id!, userData).subscribe({
-            next: () => this.dialogRef.close(true),
-            error: (err) => console.error('Update failed:', err),
-          });
+        console.log('token 123', this.token);
+        if (this.token) {
+          userData.token = this.token;
+          this.onPublicProcess(userData);
         } else {
-          this.userService.addUser(userData).subscribe({
-            next: () => this.dialogRef.close(true),
-            error: (err) => console.error('Add failed:', err),
-          });
+          this.onAdminProcess({ ...userData, token: this.token });
         }
       })
       .catch((err) => {
         console.error('Image upload failed:', err);
         // Optionally show an error message to the user
       });
+  }
+
+  onAdminProcess(userData: any) {
+    if (this.isEdit) {
+      this.userService.updateUser(this.data.user!.id!, userData).subscribe({
+        next: () => this.dialogRef.close(true),
+        error: (err) => console.error('Update failed:', err),
+      });
+    } else {
+      this.userService.addUser(userData).subscribe({
+        next: () => this.dialogRef.close(true),
+        error: (err) => console.error('Add failed:', err),
+      });
+    }
+  }
+  onPublicProcess(userData: any) {
+    if (this.isEdit) {
+      this.userPubService.updateUser(this.data.user!.id!, userData).subscribe({
+        next: () => this.dialogRef.close(true),
+        error: (err) => console.error('Update failed:', err),
+      });
+    } else {
+      this.userPubService.addUser(userData).subscribe({
+        next: () => this.dialogRef.close(true),
+        error: (err) => console.error('Add failed:', err),
+      });
+    }
   }
 }
